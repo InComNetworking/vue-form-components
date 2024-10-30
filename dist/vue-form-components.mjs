@@ -11,8 +11,6 @@ const v = (e, i) => {
 };
 var z = ["lg", "sm"], w = ["text", "email", "file", "password", "textarea", "color"];
 const D = {
-  // Properties returned from data() become reactive state
-  // and will be exposed on `this`.
   data() {
     return {
       validationTimeOut: !1,
@@ -132,8 +130,6 @@ function P(e, i, s, f, t, d) {
 const oe = /* @__PURE__ */ v(D, [["render", P], ["__scopeId", "data-v-25a708f1"]]);
 var E = ["lg", "sm"];
 const K = {
-  // Properties returned from data() become reactive state
-  // and will be exposed on `this`.
   data() {
     return {
       formId: "",
@@ -145,7 +141,7 @@ const K = {
   emits: ["update:modelValue"],
   computed: {
     describedby: function() {
-      if (this.describe)
+      if (!!this.describe)
         return this.formId + "-described";
     },
     inputClasses: function() {
@@ -200,8 +196,6 @@ function H(e, i, s, f, t, d) {
   ], 64);
 }
 const re = /* @__PURE__ */ v(K, [["render", H]]), J = {
-  // Properties returned from data() become reactive state
-  // and will be exposed on `this`.
   data() {
     return {
       formId: "",
@@ -256,8 +250,6 @@ var _ = -1, Z = function() {
   return _ == -1 ? (_++, e) : (_++, e + "-" + _);
 };
 const $ = {
-  // Properties returned from data() become reactive state
-  // and will be exposed on `this`.
   data() {
     return {
       formId: "",
@@ -280,7 +272,7 @@ const $ = {
       return this.generatedIds[e] ? this.generatedIds[e] : (this.generatedIds[e] = m("radio"), this.generatedIds[e]);
     },
     IsDisabled: function(e) {
-      if (this.disabled && this.disabled.indexOf && this.disabled.indexOf(e) !== -1)
+      if (!!this.disabled && !!this.disabled.indexOf && this.disabled.indexOf(e) !== -1)
         return !0;
     }
   },
@@ -319,8 +311,6 @@ function ie(e, i, s, f, t, d) {
   ]))), 128);
 }
 const fe = /* @__PURE__ */ v($, [["render", ie]]), se = {
-  // Properties returned from data() become reactive state
-  // and will be exposed on `this`.
   data() {
     return {
       formId: "",

@@ -1,5 +1,5 @@
 {
-  "name": "vue-form-components",
+  "name": "@incomnetworking/vue-form-components",
   "version": "1.0.7",
   "description": "Vue 3 form components based on Bootstrap 5.1",
   "files": [
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Gormartsen/vue-form-components.git"
+    "url": "git+https://github.com/InComNetworking/vue-form-components.git"
   },
   "keywords": [
     "vue",
@@ -36,9 +36,9 @@
   "author": "Gormartsen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Gormartsen/vue-form-components/issues"
+    "url": "https://github.com/InComNetworking/vue-form-components/issues"
   },
-  "homepage": "https://github.com/Gormartsen/vue-form-components#readme",
+  "homepage": "https://github.com/InComNetworking/vue-form-components#readme",
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",
     "@vitejs/plugin-vue": "^3.0.1",
