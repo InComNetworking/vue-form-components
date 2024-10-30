@@ -61,7 +61,9 @@ export default {
   },
   watch: {
     text: function (newValue) {
-      return this.$emit("update:modelValue", newValue);
+      if(newValue != undefined) {
+        return this.$emit("update:modelValue", newValue);
+      }
     },
   },
   updated: function () {
@@ -71,7 +73,9 @@ export default {
       this.$refs["input"].disabled = false;
     }
     if (this.modelValue !== undefined) {
-      this.text = this.modelValue;
+      if(this.text != this.modelValue) {
+        this.text = this.modelValue;
+      }
     }
   },
   created: function () {

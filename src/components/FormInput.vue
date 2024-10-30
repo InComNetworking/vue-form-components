@@ -1,6 +1,16 @@
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.invalid-feedback, .valid-feedback {
+  display:block;
+}
+</style>
 <template>
   <label v-if="label" :for="formId" class="form-label">{{ label }}</label>
+  <div class="invalid-feedback" v-if="validationStatus.valid == false && validationStatus.message != ''">
+    {{validationStatus.message}}
+  </div>
+  <div class="valid-feedback" v-if="validationStatus.valid && validationStatus.message != ''">
+    {{validationStatus.message}}
+  </div>
   <input
     v-if="inputTypeTag == 'input'"
     :id="formId"
@@ -10,9 +20,12 @@
     :aria-describedby="describedby"
     :type="inputType"
     :readonly="readonly"
+    :autocomplete="autocomplete"
     v-model="text"
     :aria-label="arialabel"
-    v-on:focusout="$emit('focusout')"
+    v-on:focusout="focusOut()"
+    v-on:focus="$emit('focus')"
+    v-on:keyup.enter="enterPressed"
   />
   <textarea
     v-if="inputTypeTag == 'textarea'"
@@ -22,13 +35,18 @@
     :placeholder="placeholder"
     :aria-describedby="describedby"
     :aria-label="arialabel"
+    :autocomplete="autocomplete"
     v-model="text"
     :rows="rows"
     :readonly="readonly"
+    v-on:focusout="focusOut()"
+    v-on:focus="$emit('focus')"
   ></textarea>
   <div v-if="describe" :id="formId + '-described'" class="form-text">
     {{ describe }}
   </div>
+  
+  
 </template>
 <script>
 import { getFormItemId } from "./id-generator";
@@ -40,6 +58,10 @@ export default {
   // and will be exposed on `this`.
   data() {
     return {
+      validationTimeOut:false,
+      validationStatus: {
+
+      },
       formId: "",
       text: "",
       inputTypeTag: "input",
@@ -47,8 +69,8 @@ export default {
       describedby: undefined,
     };
   },
-  props: ["label", "size", "type", "placeholder", "describe", "id", "disabled", "rows", "readonly", "value", "modelValue", "aria-label", "aria-describedby", "autofocus"],
-  emits: ['focusout', "keyup", "update:modelValue"],
+  props: ["label", "size", "type", "placeholder", "describe", "id", "disabled", "rows", "readonly", "value", "modelValue", "aria-label", "aria-describedby", "autofocus", "validation", "autocomplete"],
+  emits: ['focusout', 'focus', "keyup", "update:modelValue"],
   computed: {
     inputType: function () {
       var defaultType = "text";
@@ -75,12 +97,56 @@ export default {
           classes = classes + " form-control-" + this.size;
         }
       }
+      if(this.validationStatus.valid) {
+        classes = classes + ' is-valid'
+      }
+      if(this.validationStatus.valid == false) {
+        classes = classes + ' is-invalid'
+      }
+      if(this.$attrs.class) {
+        classes = classes + ' ' + this.$attrs.class
+      }
       return classes;
     },
   },
+  methods: {
+    focusOut: function(){
+      this.Validate();
+      this.$emit('focusout')
+    },
+    Validate: function(){
+      var self = this;
+      if(this.validationTimeOut) {
+        clearTimeout(this.validationTimeOut);
+      }
+
+      if(this.validation && typeof this.validation === 'function') {
+        this.validationTimeOut = setTimeout(function(){
+          self.validation(self.text, function(status) {
+            self.validationStatus = status
+          })
+        }, 300)
+      }
+      if(this.validation) {
+        self.validationStatus = this.validation
+      }
+    },
+    enterPressed: function(){
+      this.$refs.input.blur();
+    }
+  },
   watch: {
+    validation: function(){
+      if(this.validation && typeof this.validation === 'function') {
+      } else {
+        this.validationStatus = this.validation
+      }
+    },
     text: function (newValue) {
-      return this.$emit("update:modelValue", newValue);
+      this.Validate();
+      if(newValue != undefined) {
+        return this.$emit("update:modelValue", newValue);
+      }
     },
   },
   updated: function () {
@@ -90,7 +156,9 @@ export default {
       this.$refs["input"].disabled = false;
     }
     if (this.modelValue !== undefined) {
-      this.text = this.modelValue;
+      if(this.text != this.modelValue) {
+        this.text = this.modelValue;
+      }
     }
   },
   created: function () {
