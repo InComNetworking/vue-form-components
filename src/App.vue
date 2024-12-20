@@ -11,7 +11,7 @@
         <form>
           <div><label>No Label Control</label></div>
           <pre>{{ formControl }}</pre>
-          <FormInput v-model="formControl.noTitle" />
+          <FormInput v-model="formControl.noTitle" @keyup="console.log('keyup')" @keyup.enter="console.log('keyup.enter')"/>
           <FormInput
             label="Input Example Small"
             size="sm"

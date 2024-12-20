@@ -26,6 +26,7 @@
     v-on:focusout="focusOut()"
     v-on:focus="$emit('focus')"
     v-on:keyup.enter="enterPressed"
+    v-on:keyup="keyup"
   />
   <textarea
     v-if="inputTypeTag == 'textarea'"
@@ -41,6 +42,7 @@
     :readonly="readonly"
     v-on:focusout="focusOut()"
     v-on:focus="$emit('focus')"
+    v-on:keyup="$emit('keyup')"
   ></textarea>
   <div v-if="describe" :id="formId + '-described'" class="form-text">
     {{ describe }}
@@ -70,7 +72,7 @@ export default {
     };
   },
   props: ["label", "size", "type", "placeholder", "describe", "id", "disabled", "rows", "readonly", "value", "modelValue", "aria-label", "aria-describedby", "autofocus", "validation", "autocomplete"],
-  emits: ['focusout', 'focus', "keyup", "update:modelValue"],
+  emits: ['focusout', 'focus', "keyup", "update:modelValue", "keyup.enter"],
   computed: {
     inputType: function () {
       var defaultType = "text";
@@ -131,7 +133,11 @@ export default {
         self.validationStatus = this.validation
       }
     },
-    enterPressed: function(){
+    keyup: function(event){
+      this.$emit('keyup', event)
+    },
+    enterPressed: function(event){
+      this.$emit('keyup.enter', event)
       this.$refs.input.blur();
     }
   },
