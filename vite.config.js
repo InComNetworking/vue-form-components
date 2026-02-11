@@ -26,10 +26,11 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: "index.js",
+      entry: "src/index.js",
       name: packageExportName,
       // the proper extensions will be added
       fileName: "vue-form-components",
+      formats: ["umd"],
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
